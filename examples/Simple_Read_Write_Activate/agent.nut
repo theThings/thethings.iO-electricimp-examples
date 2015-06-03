@@ -1,3 +1,4 @@
+// Class to communicate with TheThings.iO
 class TheThingsAPI {
     static URLROOT="https://api.thethings.io/v2/things/";
     static HEADERS_WRITE={"Accept": "application/json", "Content-Type": "application/json"};
@@ -43,24 +44,47 @@ class TheThingsAPI {
     
     // To write a variable into the theThings.iO cloud, call this function with
     // the value to write. This function can be called any times to add more 
-    // variables to be sent. Finally, call the "send" function to actually write
+    // variables to be sent. Finally, call the "write" function to actually write
     // the values.
     //
     // key: string
     // value: number or string
     function addVar(key, value) {
+        if (typeof value == "string") {
+            value = @"""" + value + @"""";
+        }
+        
         if ( _data == "" ) {
-            _data=@"{""values"":[{""key"": """ + key + @""",""value"": " + value + "}"
+            _data=@"{""values"":[{""key"": """ + key + @""",""value"": " + value;
         } else {
-            _data = _data + @",{""key"": """ + key + @""",""value"": " + value + "}";
+            _data = _data + @"},{""key"": """ + key + @""",""value"": " + value;
         }
         
     }
     
-    // Actually send the values to theThings.iO. See function "addVar".
-    function send() {
-        //local data = @"{""values"":[{""key"": """ + variable + @""",""value"": " + value + "}]}";
-        _data = _data + "]}"
+    // After calling the addVar function to add a value for a variable
+    // to be sent, it's optional to add a geographical location to the VALUE.
+    // Use this function to do so.
+    //
+    // lat: number
+    // long: number
+    function addGeo(lat, long) {
+        _data += @",""geo"":{""lat"":" + lat + @",""long"":" + long + "}";
+    }
+    
+    // After calling the addVar function to add a value for a variable
+    // to be sent, it's optional to add a custom timestamp to the VALUE.
+    // Use this function to do so.
+    //
+    // ts: string "YYYYMMDDHHmmss"
+    function addTimeStamp(ts) {
+        _data += @",""datetime"":" + ts;
+    }
+    
+    // Actually write the values to theThings.iO. See function "addVar".
+    function write() {
+        _data = _data + "}]}"
+        server.log(_data);
         local request = http.post(_urlWrite, HEADERS_WRITE, _data);
         local response = request.sendsync();
         _data = "";
@@ -103,11 +127,15 @@ class TheThingsAPI {
     }
 }
 
+
+
+
+
 function button(state) {
     server.log("button!");
     numClicks++;
     tt.addVar("button", numClicks);
-    tt.send();
+    tt.write();
 }
 
 
@@ -136,12 +164,13 @@ function loop() {
 
 
 // Option 1: Use a thing already activated (we have the token)
-tt <- TheThingsAPI("YourTokenHere");
+tt <- TheThingsAPI("T_OHhczZcuE78lDDfXxVCjWEsRRJDD1tRV_V1xehMQ0");
 
 // Option 2: activate a new thing (we don't have the token).
 // tt <- TheThingsAPI();
-// tt.activate("YourActivationCodeHere");
-
+// tt.activate("O-mJIAm1dGf3H7dHwOl8Af4PyYtUnPn42A");
+// token <- tt.getToken();
+// server.log ( "Thing token: " + token );
 
 
 // Initialize number of clicks.

@@ -177,7 +177,15 @@ function loop() {
     // server.log("Running "+imp.getsoftwareversion()+", Free Memory: "+imp.getmemoryfree());
     // server.log(format("Relative Humidity: %0.1f",data.rh)+" %");
     // server.log(format("Temperature: %0.1f C",data.temp));
-    agent.send("tempHum", data)
+    if (currentLat < 42) currentLat += 0.001;
+    else currentLong += 0.001;
+    if (currentLong > 3) {
+        currentLat = originLat;
+        currentLong = originLong;
+    }
+    
+    data = {"rh" : data.rh, "temp" : data.temp, "geo" : {"lat" : currentLat, "long" : currentLong}};
+    agent.send("tempHum", data);
 
 }
 
@@ -195,6 +203,12 @@ dht11 <- DHT11(spi, clkspeed);
 
 // Tilt sensor configuration
 hardware.pin9.configure(DIGITAL_IN, tiltChanged);
+
+// geooffset
+originLat <- 41.411775;
+originLong <- 2.216447;
+currentLat <- originLat;
+currentLong <- originLong;
 
 // Main loop
 loop();
