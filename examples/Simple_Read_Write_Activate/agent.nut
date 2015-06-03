@@ -164,11 +164,11 @@ function loop() {
 
 
 // Option 1: Use a thing already activated (we have the token)
-tt <- TheThingsAPI("T_OHhczZcuE78lDDfXxVCjWEsRRJDD1tRV_V1xehMQ0");
+tt <- TheThingsAPI("yourTokenHere");
 
 // Option 2: activate a new thing (we don't have the token).
 // tt <- TheThingsAPI();
-// tt.activate("O-mJIAm1dGf3H7dHwOl8Af4PyYtUnPn42A");
+// tt.activate("yourActivationCodeHere");
 // token <- tt.getToken();
 // server.log ( "Thing token: " + token );
 

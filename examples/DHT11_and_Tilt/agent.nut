@@ -150,7 +150,7 @@ function tilt(data) {
 
 
 // Create global object to connect to TheThings.iO
-tt <- TheThingsAPI("oGx7Id4U5-qsWFsHmjo30WrwXT3a5D7KbHWsYSPe1Rg");
+tt <- TheThingsAPI("youTokenHere");
 
 // Register callback functions from the device
 device.on("tempHum", tempHum)
