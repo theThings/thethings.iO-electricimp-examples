@@ -5,7 +5,6 @@ function ledReadOnOff(status) {
     ledRead.write(status);
 }
 
-
 // Configure button and led
 button <- Button(hardware.pin9, DIGITAL_IN, Button.NORMALLY_LOW);
 ledRead <- hardware.pin7;
@@ -19,4 +18,4 @@ button.onPress(function() {
 
 // Register agent's callback function to 
 // turn on and off the led
-agent.on("ledReadOnOff", ledReadOnOff)
+agent.on("ledReadOnOff", ledReadOnOff);
