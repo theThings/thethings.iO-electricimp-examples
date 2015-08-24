@@ -15,4 +15,4 @@ function glove(data) {
 device.on("glove", glove);
 
 // Create a thethings.iO object to communicate with the thethings.iO cloud
-thing <- TheThingsAPI("hX8NKildILix3Saik4m-U-UINmFF587vsi9W1fWqraE");
+thing <- TheThingsAPI("YourTokenHere");

@@ -12,9 +12,7 @@ function poll() {
     local right = fr.read();
     local left = fl.read();
     
-    // Invert the values
-    right = math.abs(right - 65535);
-    left = math.abs(left - 65535);
+    // Calculate the mean
     local mean = (right + left)/2;
     
     // Send data if a force is detected
